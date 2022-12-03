@@ -1,6 +1,6 @@
 RewriteEngine On
 
 RewriteBase /
-
+RewriteCond %{DOCUMENT_ROOT}/content/%{REQUEST_URI} -f
 RewriteRule !(^content/) index.html [L]
 
