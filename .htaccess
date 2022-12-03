@@ -1,4 +1,6 @@
 RewriteEngine On
 
-DirectoryIndex /content
+RewriteBase /content/
+
+RewriteRule (.*)$ $1 [L,QSA]
 
