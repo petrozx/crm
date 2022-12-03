@@ -1,5 +1,5 @@
 RewriteEngine On
 
 RewriteCond %{DOCUMENT_ROOT}/content/%{REQUEST_URI} -f
-RewriteRule ^(.*)$ content/$0.html [L]
+RewriteRule ^(.*)$.html content/$0 [L]
 RewriteRule !(^content/) index.html [L]
