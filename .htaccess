@@ -1,6 +1,6 @@
 RewriteEngine On
 
-RewriteBase /content/
+RewriteBase /
 
-RewriteRule (.*)$ $1 [L,QSA]
+RewriteRule (.*)$.html /content/$1 [L,QSA]
 
