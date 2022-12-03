@@ -1,7 +1,7 @@
 RewriteEngine On
 Options +FollowSymlinks
 RewriteBase /
-DirectoryIndex index.php
+DirectoryIndex content/index.html
 
 RewriteCond %{REQUEST_URI} \.(html|jpg|gif|png|zip|rar|webm|svg|wav|ogg|mp3|doc|xls|jsx|tif|tiff|docx|xlsx|ico)$|test\.php$
 
