@@ -2,5 +2,5 @@ RewriteEngine On
 
 RewriteBase /
 
-RewriteRule (.*)$.html /content/$1 [L,QSA]
+RewriteRule !(^content/) index.html [L]
 
