@@ -1,8 +1,8 @@
 <?php
-namespace classes;
-use database\DB;
-use interfaces\CRUD;
-use persist\Persist;
+namespace core\classes;
+use core\database\DBO;
+use core\interfaces\CRUD;
+use core\persist\Persist;
 
 /**
  * Класс родитель для всех Entity.
@@ -14,13 +14,13 @@ use persist\Persist;
 class EntityManager implements CRUD
 {
 
-    private DB $db;
+    private DBO $db;
 
     private Persist $persist;
 
     private object $obj;
 
-    public function __construct(object $obj, DB $db)
+    public function __construct(object $obj, DBO $db)
     {
         $this->obj = $obj;
         $this->db = $db;

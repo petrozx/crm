@@ -1,6 +1,6 @@
 <?php
 
-namespace exceptions;
+namespace core\exceptions;
 
 class SingletonException extends \Exception
 {

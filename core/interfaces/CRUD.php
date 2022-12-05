@@ -1,5 +1,5 @@
 <?php
-namespace interfaces;
+namespace core\interfaces;
 
 interface CRUD
 {

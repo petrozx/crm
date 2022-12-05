@@ -1,9 +1,9 @@
 <?php
-namespace database;
+namespace core\database;
 use PDO;
-use traits\Singleton;
+use core\traits\Singleton;
 
-class DB
+class DBO
 {
     use Singleton;
     private PDO $connect;

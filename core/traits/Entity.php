@@ -2,8 +2,8 @@
 
 namespace traits;
 
-use classes\EntityManager;
-use database\DB;
+use core\classes\EntityManager;
+use core\database\DBO;
 use ReflectionClass;
 use ReflectionException;
 
@@ -40,7 +40,7 @@ trait Entity
                 $_ = [["=$_v" => $_[0]]];
         }
 
-        return (new EntityManager($this, DB::getInstance()))
+        return (new EntityManager($this, DBO::getInstance()))
                 ->$m(
                     !empty($_)
                         ? $_[0]

@@ -1,5 +1,5 @@
 <?php
-namespace persist;
+namespace core\persist;
 
 class Persist
 {
