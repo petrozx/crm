@@ -3,6 +3,7 @@ namespace core\classes;
 use core\database\DBO;
 use core\interfaces\CRUD;
 use core\persist\Persist;
+use Exception;
 
 /**
  * Класс родитель для всех Entity.
@@ -20,11 +21,14 @@ class EntityManager implements CRUD
 
     private object $obj;
 
-    public function __construct(object $obj, DBO $db)
+    private array $prepare;
+
+    public function __construct(object $obj, DBO $db, $prepare)
     {
         $this->obj = $obj;
         $this->db = $db;
         $this->persist = new Persist($obj);
+        $this->prepare = $prepare;
     }
 
     /**
@@ -32,6 +36,7 @@ class EntityManager implements CRUD
      * Метод вызывается на новом экземпляре класса.
      * Метод вызывается на новом экземпляре класса.
      * Задавать значение @id не нужно.
+     * @throws Exception
      */
     public function save(): object|string
     {
@@ -39,12 +44,12 @@ class EntityManager implements CRUD
             return $this->persist->setId(
                 $this->db->setTable($this->persist->getTableName())
                 ->beginTransaction()
-                ->insert($this->persist->getCombine())
+                ->insert($this->prepare)
                 ->commitTransaction()
                 ->getResultInsert()
             );
-        } catch (\Exception $e) {
-            return $e->getCode();
+        } catch (Exception) {
+            throw new Exception("При попытке сохранить запись, произошла ошибка");
         }
     }
 
@@ -52,6 +57,7 @@ class EntityManager implements CRUD
      * @param array $arr
      * @return object|bool
      * Метод вызывается на новом экзмпляре класса.
+     * @throws Exception
      */
     public function find(array $arr): object|string
     {
@@ -63,57 +69,56 @@ class EntityManager implements CRUD
                 ->commitTransaction()
                 ->getResultSelect()
             );
-        } catch (\Exception) {
-            return 'Сущность с такими характеристиками, не найдена';
+        } catch (Exception) {
+            throw new Exception('Запись с такими характеристиками, не найдена');
         }
     }
 
     /**
      * @param array|null $arr
-     * @return array
+     * @return bool
      * Метод может вызываться, как на созданном экземпляре, так и на новом, передав фильтр,
      * по которому следует найти и удалить запись.
+     * @throws Exception
      */
-    public function delete(array $arr = null): array
+    public function delete(array $arr = null): bool
     {
         try {
             $this->db->setTable($this->persist->getTableName())
                 ->beginTransaction()
                 ->delete($arr ?: ["id" => $this->obj->getId()])
                 ->commitTransaction();
-            return ['result' => true];
-        } catch (\Exception $e) {
-            return ['result' => false,
-                'message'=>$e->getCode()
-            ];
+            return true;
+        } catch (Exception) {
+            throw new Exception('При попытке удалить запись, произошла ошибка');
         }
     }
 
     /**
-     * @return bool[]
+     * @return bool
      * Метод вызывается на существующем экземляре класса.
+     * @throws Exception
      */
-    public function update(): array
+    public function update(): bool
     {
         try {
             $this->db->setTable($this->persist->getTableName())
                 ->beginTransaction()
                 ->update($this->persist->getCombine(), $this->obj->getId())
                 ->commitTransaction();
-            return ['result' => true];
-        }catch (\PDOException $e) {
-            return ['result' => false,
-                    'message'=>$e->getCode()
-            ];
+            return true;
+        }catch (Exception) {
+            throw new Exception("При попытке обновить запись, произошла ошибка");
         }
     }
 
     /**
-     * @param array|null $arr
+     * @param array $arr
      * @return array
      * Метод вызывается на новом экземпляре класса.
+     * @throws Exception
      */
-    public function findAll(array $arr = null): array
+    public function findAll(array $arr): array
     {
         try {
             return $this->persist->buildAll(
@@ -123,8 +128,8 @@ class EntityManager implements CRUD
                     ->commitTransaction()
                     ->getResultSelect()
             );
-        } catch (\Exception) {
-            return [];
+        } catch (Exception) {
+            throw new Exception('Записи с такими характеристиками, не найдены');
         }
     }
 

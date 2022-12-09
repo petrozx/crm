@@ -50,6 +50,7 @@ class DBO
             $names,
             $preValues
         ));
+        var_dump($arr);
         $prepare->execute($arr);
         $prepare->fetch();
         return $this;

@@ -1,8 +1,8 @@
 <?php
 
-namespace traits;
+namespace core\traits;
 
-use exceptions\SingletonException;
+use core\exceptions\SingletonException;
 
 trait Singleton
 {
@@ -45,7 +45,7 @@ trait Singleton
         $calledClass = get_called_class();
 
         if (!isset($instances[$calledClass])) {
-            $instances[$calledClass] = new $calledClass();
+            $instances[$calledClass] = new $calledClass;
         }
         return $instances[$calledClass];
     }

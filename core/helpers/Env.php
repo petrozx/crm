@@ -1,5 +1,5 @@
 <?php
-namespace core\classes;
+namespace core\helpers;
 
 class Env
 {
@@ -14,7 +14,6 @@ class Env
     {
         static $instances;
         $calledClass = get_called_class();
-
         if (!isset($instances[$calledClass])) {
             $instances[$calledClass] = new $calledClass($patch);
         }

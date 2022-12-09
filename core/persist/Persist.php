@@ -22,12 +22,17 @@ class Persist
         $this->tableName = $this->_getTableName();
     }
 
-    private function _getCombine(): array
+    public function getCombine(): array
     {
-        return array_combine(
-            array_map(fn($k) => $this->camelToUnder($k), array_values($this->columns)),
-            array_values($this->values)
-        );
+        $arrRec = [];
+        foreach (get_object_vars($this) as $column=>$value) {
+            if ($value === null) {
+                $value = 'DEFAULT';
+            }
+            $column = $this->camelToUnder($column);
+            $arrRec[$column] = $value;
+        }
+        return $arrRec;
     }
 
     private function _getTableName(): string
@@ -36,25 +41,7 @@ class Persist
         return $this->camelToUnder($cl[count($cl) - 1]);
     }
 
-    private function getColumns(): array|string
-    {
-        return str_replace('set', '',
-            array_filter($this->methods, fn($k) =>
-                str_contains($k, 'set') && $k !== 'setId'
-            )
-        );
-    }
-
-    private function getValues(): array
-    {
-        $currentObj = $this->obj;
-        return array_map(function ($k) use ($currentObj) {
-            $methName = "get$k";
-            return $currentObj->$methName();
-        }, $this->columns);
-    }
-
-    private function camelToUnder(string $str): string
+    public static function camelToUnder(string $str): string
     {
         return ltrim(
             strtolower(
@@ -73,16 +60,6 @@ class Persist
     public function getTableName(): string
     {
         return $this->tableName;
-    }
-
-    /**
-     * @return array
-     */
-    public function getCombine(): array
-    {
-        $this->columns = $this->getColumns();
-        $this->values = $this->getValues();
-        return $this->_getCombine();
     }
 
     public function build(mixed $queryResult): object|bool

@@ -2,29 +2,6 @@ RewriteEngine on
 RewriteBase /
 DirectoryIndex index.html
 
-RewriteCond %{REQUEST_URI} \..+$
-   # Если файл содержит точку.
-RewriteCond %{REQUEST_FILENAME} !-d
-   # И это не директория.
-RewriteCond %{REQUEST_FILENAME} -f
-   # Является файлом.
-RewriteCond %{REQUEST_URI} ^(.+)/$
-   # И в конце URL есть слеш.
-RewriteRule ^(.+)/$ /$1 [R=301,L]
-   # Исключить слеш.
-
-############################################################################
-#### Добавляем слеш(/), если его нет, и это не файл.                    ####
-############################################################################
-RewriteCond %{REQUEST_URI} !(.*)/$
-   # Если слеша в конце нет.
-RewriteCond %{REQUEST_FILENAME} !-f
-   # Не является файлом.
-RewriteCond %{REQUEST_URI} !\..+$
-   # В URL нет точки (файл).
-RewriteRule ^(.*)$ $1/ [L,R=301]
-   # Добавляем слеш в конце.
-
 #Определяем директорию для фронта
 #RewriteRule ^(.+/|)$ src/web_front/$1index.html [L] [NC]
 ##Определяем директорию для бэка TODO подумать на роутингом
@@ -37,7 +14,7 @@ RewriteCond %{REQUEST_FILENAME} (.+/)
 RewriteCond %1src/web_front (.+)
 RewriteCond %1%{REQUEST_URI} (.+)
 RewriteCond %1 !-d
-RewriteRule ^(.*)$ core/controller/controller.php?get=%1 [L]
+RewriteRule ^(.*)$ core/controller/controller.php [L]
 RewriteCond %{REQUEST_FILENAME} (.+/)
 RewriteCond %1src/web_front (.+)
 RewriteCond %1%{REQUEST_URI} (.+)
