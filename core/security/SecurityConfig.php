@@ -7,6 +7,6 @@ class SecurityConfig implements Security
     function __construct()
     {
 
-        var_dump(class_implements(Security::class));
+        var_dump(class_implements($this));
     }
 }
