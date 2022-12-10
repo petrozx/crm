@@ -7,7 +7,7 @@ use core\security\TokenConfigure;
 
 class Verify
 {
-    public static function verify(mixed $request, array $headers, int $duration, string $url): Response
+    public static function verify(array $headers): Response
     {
         if (array_key_exists('JWT', $headers)) {
             $data = TokenConfigure::decode($headers['JWT'], getenv('SECRET_KEY'));

@@ -2,41 +2,22 @@
 
 namespace core\classes;
 
-use core\helpers\Response;
-use core\persist\Persist;
+use core\traits\Singleton;
 
 #[\Attribute]
-class Controller
+abstract class Controller
 {
+    public array $request;
+    public string $method;
+    public string $uri;
+    public array $headers;
 
-   public function __construct() {}
-
-    public function getDataEndpoint(
-        array $controllers,
-        array $JWT,
-        array $request,
-        string $method,
-        string $uri,
-    ): Response
+    public function __construct()
     {
-        foreach ($controllers as $controllerTuple) {
-            [$userController, $_] = $controllerTuple;
-            $methodsController = $userController->getMethods();
-            foreach ($methodsController as $methodController) {
-                [$methodControllerAttribute] = $methodController->getAttributes();
-                $targetMethod =
-                    preg_replace('/^.+\\\\/m','', $methodControllerAttribute->getName());
-                if($targetMethod === $method) {
-                    return ($methodControllerAttribute->newInstance())->getAccess(
-                        $JWT,
-                        $request,
-                        $uri,
-                        $methodController,
-                        $userController,
-                    );
-                }
-            }
-        }
-        return Response::take(false, 'Запрашиваемый ресурс отсутствует');
+        $this->request =  json_decode(file_get_contents('php://input'), true)?:$_POST;
+        $this->method = $_SERVER['REQUEST_METHOD'];
+        $this->uri = preg_replace('/\/$/', '', $_SERVER['REDIRECT_URL']);
+        $this->headers = getallheaders();
     }
+
 }
