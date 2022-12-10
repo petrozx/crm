@@ -10,14 +10,14 @@ class Register
 {
 
     public function __construct(
-        private readonly string $url,
+        private readonly string $uri,
         private readonly mixed $entity,
         private readonly string $access,
     ){}
 
-    public function register(mixed $request, array $headers, int $duration, string $url): ?Response
+    public function register(mixed $request, array $headers, int $duration, string $uri): ?Response
     {
-        if ($this->url === $url) {
+        if ($this->url === $uri) {
             if ($this->access) {
                 $verify = self::verify($headers);
                 if (!$verify->status || $this->access !== $verify->body['role']) {

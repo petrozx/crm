@@ -4,46 +4,24 @@ namespace core\classes;
 
 
 use core\helpers\Response;
-use core\security\Security;
+use core\security\SecurityConfig;
 use core\traits\Singleton;
 
-class Middleware
+class Middleware extends Controller
 {
+
     use Singleton;
-
-    private string $uri;
-    private array $request;
-    private array $headers;
-    private string $requestHttpMethod;
-
 
     private function __construct()
     {
-        $this->request = $this->getRequest();
-        $this->headers = $this->getHeaders();
-        $this->requestHttpMethod = $_SERVER['REQUEST_METHOD'];
-        $this->uri = preg_replace('/\/$/', '', $_SERVER['REDIRECT_URL']);
+        parent::__construct();
     }
-
-    private function getHeaders(): bool|array
+    public function getResponse()
     {
-        try {
-            return getallheaders();
-        } catch (\Exception) {
-            return [];
-        }
-    }
+//        $verify = Verify::verify($this->headers);
+//        if (!$verify->status) return $verify;
+        new SecurityConfig();
 
-    private function getRequest()
-    {
-        $jDada = file_get_contents('php://input');
-        $pData = $_POST;
-        return json_decode($jDada, true)?:$pData;
-    }
-
-    public function getResponse(): Response
-    {
-        $security = Security::getInstance()->check($this->request, $this->headers, $this->requestHttpMethod, $this->uri);
     }
 
 }

@@ -2,8 +2,6 @@
 
 namespace core\helpers;
 
-use core\traits\Entity;
-
 class Response
 {
     private function __construct(
