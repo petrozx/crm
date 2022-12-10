@@ -7,12 +7,11 @@ use src\web_back\entity\Users;
 use core\classes\Login;
 use core\classes\Register;
 
-#[Security]
-interface SecurityURI
+class SecurityURI implements Security
 {
     #[Login(uri: '/user/login', entity: Users::class)]
-    function login();
+    function login(){}
 
     #[register(uri: '/user/register', entity: Users::class)]
-    function register();
+    function register(){}
 }
