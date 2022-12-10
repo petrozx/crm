@@ -6,6 +6,11 @@ class SecurityConfig implements Security
 {
     function __construct()
     {
-        var_dump(class_implements(class_implements($this)['core\security\Security']));
+        foreach (get_declared_classes() as $className) {
+            if (in_array('Iterator', class_implements($className))) {
+                echo $className, PHP_EOL;
+            }
+        }
+
     }
 }
