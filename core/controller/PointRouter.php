@@ -18,8 +18,7 @@ class PointRouter extends Controller
                         if (self::$method === $controllersUserMethodAttributeShortName) {
                             $methodName = strtolower(preg_replace('/^.+\\\\/m', '', $controllersUserMethodAttribute->getName()));
                             $res = $controllersUserMethodAttribute->newInstance()->$methodName($controllersUserClass, $controllersUserMethod);
-                            if (is_null($res)) continue;
-                            else return $res;
+                            if (!is_null($res)) return $res;
                         }
                     }
                 }
