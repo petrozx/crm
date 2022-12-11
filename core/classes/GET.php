@@ -6,33 +6,29 @@ use core\helpers\Response;
 use core\persist\Persist;
 
 #[\Attribute]
-class GET
+class GET extends Controller
 {
     function __construct(
-        private string $uri,
-        private mixed $entity = null,
-        private string $access = '',
+        private string  $point,
+        private mixed   $entity = null,
+        private ?string $access = null,
     )
     {}
 
-    public function getAccess($JWT,
-                              $request,
-                              $uri,
-                              $methodController,
-                              $userController
-    ): Response
+    public function getAccess($userController, $methodController): Response
     {
-        if ($this->access && $this->access !== $JWT['role']) {
+        $request = null;
+        if ($this->access && $this->access !== $_SESSION['AUTH']['ROLE']) {
             return Response::take(false, 'Доступ к методу запрещен.');
         }
-        $getParam = preg_replace('/^.+\//m', '', $this->uri);
+        $getParam = preg_replace('/^.+\//m', '', $this->point);
         if (!empty($getParam)) {
-            $trueTargetUri = preg_replace('/\/{.+$/m', '', $this->uri);
-            $trueCurrentUri = preg_replace('~/[a-zA-Z0-9]+$~ui', '', $uri);
+            $trueTargetUri = preg_replace('/\/{.+$/m', '', $this->point);
+            $trueCurrentUri = preg_replace('~/[a-zA-Z0-9]+$~ui', '', $this->uri);
             if ($trueTargetUri !== $trueCurrentUri) {
                 return Response::take(false, 'Запрашиваемого метода, не существует');
             } else {
-                $request = preg_replace('/^.+\//m', '', $uri);
+                $request = preg_replace('/^.+\//m', '', $this->uri);
             }
         }
         $methodName = $methodController->getName();

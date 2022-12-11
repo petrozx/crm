@@ -9,13 +9,13 @@ use src\web_back\entity\Users;
 class UserController
 {
 
-    #[POST(uri: '/get/hello', entity: Users::class)]
+    #[POST(point: '/get/hello', entity: Users::class)]
     public function getHello(Users $users)
     {
         return $users->save();
     }
 
-    #[POST(uri: '/api/post')]
+    #[POST(point: '/api/post')]
     public function lalala()
     {
         return "you are in lalala";

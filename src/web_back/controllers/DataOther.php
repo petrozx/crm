@@ -11,7 +11,7 @@ use src\web_back\entity\Users;
 class DataOther
 {
 
-    #[GET(uri: '/api/v1/{id}')]
+    #[GET(point: '/api/v1/{id}')]
     public function hi($id)
     {
         return (Users::builder()->findById($id))->getUserName();
