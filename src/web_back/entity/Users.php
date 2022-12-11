@@ -2,6 +2,9 @@
 
 namespace src\web_back\entity;
 
+use core\security\fields\Password;
+use core\security\fields\Role;
+use core\security\fields\Username;
 use core\traits\Entity;
 
 class Users
@@ -11,8 +14,11 @@ class Users
     private int $id;
 
     public function __construct(
+        #[Username]
         private string $userName,
+        #[Password]
         private string $password,
+        #[Role]
         private string $role
     ) {}
 
