@@ -4,7 +4,6 @@ namespace core\traits;
 
 use core\classes\EntityManager;
 use core\database\DBO;
-use core\helpers\Response;
 use core\persist\Persist;
 use ReflectionClass;
 use ReflectionException;
@@ -29,6 +28,9 @@ trait Entity
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function __call($m, $_)
     {
         try {
@@ -57,7 +59,7 @@ trait Entity
                         : $_
                 );
         } catch (\Exception $e) {
-            return $this;
+            throw new \Exception($e->getMessage());
         }
     }
 

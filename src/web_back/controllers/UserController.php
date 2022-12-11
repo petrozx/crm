@@ -1,22 +1,22 @@
 <?php
 
 namespace src\web_back\controllers;
-use core\classes\Controller;
-use core\classes\POST;
+use core\controller\PointRouter;
+use core\controller\POST;
 use src\web_back\entity\Users;
 
-#[Controller]
+#[PointRouter]
 class UserController
 {
 
     #[POST(point: '/get/hello', entity: Users::class)]
-    public function getHello(Users $users)
+    public function getHello()
     {
-        return $users->save();
+        return '$users->save()';
     }
 
     #[POST(point: '/api/post')]
-    public function lalala()
+    public function getlala()
     {
         return "you are in lalala";
     }

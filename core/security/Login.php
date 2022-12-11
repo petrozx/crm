@@ -2,7 +2,7 @@
 
 namespace core\security;
 
-use core\classes\Controller;
+use core\controller\Controller;
 use core\helpers\Response;
 
 #[\Attribute]
@@ -15,13 +15,13 @@ class Login extends Controller
 
     public function login(): ?Response
     {
-        if ($this->uri === $this->point) {
+        if (self::$uri === $this->point) {
             if ($this->access && $this->access !== $_SESSION['AUTH']['ROLE']) {
                 return Response::take(false, 'У вас нет прав, на эту операцию.');
             }
             try {
-                $user = $this->entity::builder()->findByUserName($this->request['username']);
-                if (password_verify($this->request['password'], $user->getPassword())) {
+                $user = $this->entity::builder()->findByUserName(self::$request['username']);
+                if (password_verify(self::$request['password'], $user->getPassword())) {
                     $_SESSION['AUTH']['NAME'] = $user->getUserName();
                     $_SESSION['AUTH']['ROLE'] = $user->getRole();
                     return Response::take(

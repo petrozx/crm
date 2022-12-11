@@ -6,7 +6,7 @@ DirectoryIndex index.html
 #RewriteRule ^(.+/|)$ src/web_front/$1index.html [L] [NC]
 ##Определяем директорию для бэка TODO подумать на роутингом
 #RewriteCond %{REQUEST_URI} .php$
-#RewriteRule ^(.*)$ core/controller/controller.php
+#RewriteRule ^(.*)$ core/main/main.php
 
 RewriteCond %{REQUEST_URI} !/index\.html$
 RewriteCond %{REQUEST_URI} !/controller\.php$
@@ -14,7 +14,7 @@ RewriteCond %{REQUEST_FILENAME} (.+/)
 RewriteCond %1src/web_front (.+)
 RewriteCond %1%{REQUEST_URI} (.+)
 RewriteCond %1 !-d
-RewriteRule ^(.*)$ core/controller/controller.php [L]
+RewriteRule ^(.*)$ core/main/main.php [L]
 RewriteCond %{REQUEST_FILENAME} (.+/)
 RewriteCond %1src/web_front (.+)
 RewriteCond %1%{REQUEST_URI} (.+)

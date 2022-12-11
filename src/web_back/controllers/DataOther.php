@@ -2,12 +2,11 @@
 
 namespace src\web_back\controllers;
 
-use core\classes\Controller;
-use core\classes\GET;
-use core\classes\POST;
+use core\controller\GET;
+use core\controller\PointRouter;
 use src\web_back\entity\Users;
 
-#[Controller]
+#[PointRouter]
 class DataOther
 {
 
@@ -15,5 +14,11 @@ class DataOther
     public function hi($id)
     {
         return (Users::builder()->findById($id))->getUserName();
+    }
+
+    #[GET(point: '/git/answer')]
+    public function hihi()
+    {
+        return 'hi';
     }
 }

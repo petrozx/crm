@@ -1,10 +1,9 @@
 <?php
 
-namespace core\classes;
+namespace core\controller;
 
 use core\helpers\Response;
 use core\persist\Persist;
-use core\traits\Entity;
 
 #[\Attribute]
 class POST extends Controller
@@ -16,20 +15,20 @@ class POST extends Controller
     )
     {}
 
-    public function getAccess($userController, $methodController): Response
+    public function post($userController, $methodController): ?Response
     {
-        if ($this->point === $this->uri) {
+        if ($this->point === self::$uri) {
             if ($this->access && $this->access !== $_SESSION['AUTH']['ROLE']) {
                 return Response::take(false, 'Доступ к методу запрещен.');
             }
             if (class_exists($this->entity) && !empty($this->request)) {
-                $request = (new Persist($this->entity::builder()))->build($this->request);
+                self::$request = (new Persist($this->entity::builder()))->build(self::$request);
             }
             $methodName = $methodController->getName();
-            $result = ($userController->newInstance())->$methodName($this->request);
+            $result = ($userController->newInstance())->$methodName(self::$request);
             return Response::take(true, $result);
         } else {
-            return Response::take(false, 'Запрашиваемого метода, не существует');
+            return null;
         }
     }
 
