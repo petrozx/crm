@@ -15,7 +15,6 @@ class Middleware extends Controller
 {
     use Singleton;
 
-    private array $userClasses;
     private const CONTROLLER = 'PointRouter';
     private const SECURITY = 'Security';
 
