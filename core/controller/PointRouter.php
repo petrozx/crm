@@ -7,7 +7,7 @@ use core\helpers\Response;
 #[\Attribute]
 class PointRouter extends Controller
 {
-    public function checkPoint($controllersUserClasses, $pointer = 'current'): Response
+    public function checkPoint($controllersUserClasses): Response
     {
         if (!empty($controllersUserClasses)) {
             foreach ($controllersUserClasses as [$controllersUserClass, $_]) {
